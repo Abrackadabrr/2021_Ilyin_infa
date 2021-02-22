@@ -76,17 +76,36 @@ def moon():
 
 
 def clouds_r(n):
+    '''
+    :param n: amount of clouds
+    :return: draw cloud in random places
+    '''
     for i in range(n):
         ellipse(screen, (ri(150, 200), 128, 128), (ri(100, 600), ri(30, 300), ri(200, 300), ri(50, 70)))
 
 
 def chimney1(x, y, w=300, l=400):
+    '''
+    :param x: the same parametr as in function "house"
+    :param y: the same parametr as in function "house"
+    :param w: the same parametr as in function "house"
+    :param l: the same parametr as in function "house"
+    :return: draw two chimney
+    '''
     chimney_color = (56, 56, 56)
     rect(screen, chimney_color, (x + (250/300)*w, y - l - (75/400)*l, (10/300)*w, (70/400)*l+1))
     rect(screen, chimney_color, (x + (50 / 300) * w, y - l - (90 / 400) * l, (20 / 300) * w, (50 / 400) * l+1))
 
 
 def chimney2(x, y, w=300, l=400):
+    '''
+    :param x: the same parametr as in function "house"
+    :param y: the same parametr as in function "house"
+    :param w: the same parametr as in function "house"
+    :param l: the same parametr as in function "house"
+    :return: draw another two chimney
+    '''
+
     chimney_color = (56, 56, 56)
     rect(screen, chimney_color, (x + (200/300)*w, y - l - (90/400)*l, (25/300)*w, (60/400)*l+1))
     rect(screen, chimney_color, (x + (100/300) * w, y - l - (100 / 400) * l, (30/ 300) * w, (90 / 400) * l+1))
@@ -99,6 +118,14 @@ def set_start_environment():
 
 
 def ghost(x, y, s, k = 1,r = 1):
+    '''
+    :param x: x-coord of the center of ghost's head
+    :param y: x-coord of the center of ghost's head
+    :param s: surface (need to add)
+    :param k: size (коэффициент увеличения)
+    :param r: set 1 or -1 (отражение)
+    :return:
+    '''
     circle(s, (255, 255, 255), (x, y), 25*k)
     circle(s, (25, 150, 255), (x - r*10*k, y - 9*k), 5 * k)
     circle(s, (25, 150, 255), (x + r*8*k, y - 9*k), 5 * k)
