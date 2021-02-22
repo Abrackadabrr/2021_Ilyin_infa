@@ -1,3 +1,16 @@
 Ссылки на репозитории Б03-006 и Б03-001т
 
-https://github.com/NikitaVD7777/2021_Dudko_infa // Никита Дудко
+https://github.com/NikitaVD7777/2021_Dudko_infa 	// Никита Дудко
+https://github.com/Plakhotniuk  			// Арсений Плахотнюк
+https://github.com/EgorMichel  				// Егор Михель
+https://github.com/oitsumerarete			// Мария Иванова
+https://github.com/karimvafin/2021_Vafin_infa		// Вафин Карим
+https://github.com/alryt 				// Алёна Рытова
+https://github.com/leeiozh 				// Елизавета Ежова
+https://github.com/Arolg/2021_python006			// Фаррух Исматов
+https://github.com/evgenii-zaikin			// Заикин Евгений
+https://github.com/agilitee/2021_Pavlishina_infa 	// Екатерина Павлишина
+https://github.com/Diana2410-start/2021_Yakusheva_infa	// Якушева Диана
+https://github.com/ArtemEvstafev/2021_Evstafev_Python 	// Артём Евстафьев
+https://github.com/arytheweirdo/2021_Yildirim_infa	// Йилдырым Арина
+https://github.com/ArseniyKichkin/2021_Kichkin_infa	// Кичкин Арсений
