@@ -6,7 +6,7 @@ import math as m
 
 pygame.init()
 
-FPS = 20
+FPS = 15
 screen = pygame.display.set_mode((650, 750))
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -53,14 +53,15 @@ def house(x, y, width=300, length=400):
     # draw long windows
     d.rect(screen, longwindow_color, (x + (35 / 300) * width, y - length, (30 / 300) * width, (170 / 400) * length), 0)
     d.rect(screen, longwindow_color, (
-    x + (35 / 300) * width + (30 / 300) * width + (25 / 300) * width, y - length, (30 / 300) * width,
-    (170 / 400) * length), 0)
+        x + (35 / 300) * width + (30 / 300) * width + (25 / 300) * width, y - length, (30 / 300) * width,
+        (170 / 400) * length), 0)
     d.rect(screen, longwindow_color, (
-    x + ((35 / 300) + (30 / 300) + (25 / 300) + (30 / 300) + (35 / 300)) * width, y - length, (30 / 300) * width,
-    (170 / 400) * length), 0)
+        x + ((35 / 300) + (30 / 300) + (25 / 300) + (30 / 300) + (35 / 300)) * width, y - length, (30 / 300) * width,
+        (170 / 400) * length), 0)
     d.rect(screen, longwindow_color, (
-    x + ((35 / 300) + (30 / 300) + (25 / 300) + (30 / 300) + (35 / 300) + (30 / 300) + (45 / 300)) * width, y - length,
-    (30 / 300) * width, (170 / 400) * length), 0)
+        x + ((35 / 300) + (30 / 300) + (25 / 300) + (30 / 300) + (35 / 300) + (30 / 300) + (45 / 300)) * width,
+        y - length,
+        (30 / 300) * width, (170 / 400) * length), 0)
 
     # draw balcony
     x_of_balcony = x - (30 / 300) * width
@@ -68,25 +69,26 @@ def house(x, y, width=300, length=400):
     between_balcas = (37 / 300) * width  # don't change it (иначе балкон уедет)
     d.rect(screen, balcony_color, (x_of_balcony, y_of_balcohy, width + (60 / 300) * width, (30 / 400) * length), 0)
     d.rect(screen, balcony_color, (
-    x_of_balcony + (15 / 300) * width, y_of_balcohy - (30 / 400) * length, (10 / 300) * width, (30 / 400) * length + 2),
+        x_of_balcony + (15 / 300) * width, y_of_balcohy - (30 / 400) * length, (10 / 300) * width,
+        (30 / 400) * length + 2),
            0)
     for i in range(1, 6):
         xx = x_of_balcony + (15 / 300) * width + i * between_balcas + (i - 1) * (20 / 300) * width
         d.rect(screen, balcony_color,
                (xx, y_of_balcohy - (30 / 400) * length, (20 / 300) * width, (30 / 400) * length + 2), 0)
     d.rect(screen, balcony_color, (
-    x_of_balcony + (15 / 300) * width + 6 * between_balcas + (6 - 1) * (20 / 300) * width - (2 / 300) * width,
-    y_of_balcohy - (30 / 400) * length, (10 / 300) * width, (30 / 400) * length + 2), 0)
+        x_of_balcony + (15 / 300) * width + 6 * between_balcas + (6 - 1) * (20 / 300) * width - (2 / 300) * width,
+        y_of_balcohy - (30 / 400) * length, (10 / 300) * width, (30 / 400) * length + 2), 0)
     d.rect(screen, balcony_color, (
-    x_of_balcony + (25 / 300) * width, y_of_balcohy - (50 / 400) * length, width + (10 / 300) * width + 1,
-    (20 / 400) * length), 0)
+        x_of_balcony + (25 / 300) * width, y_of_balcohy - (50 / 400) * length, width + (10 / 300) * width + 1,
+        (20 / 400) * length), 0)
 
     # draw roof
     d.polygon(screen, roof_color, ((x - (30 / 300) * width, y - length - 1), (x + (20 / 300) * width, y - length - 1),
                                    (x + (20 / 300) * width, y - length - (40 / 400) * length)))
     d.polygon(screen, roof_color, (
-    (x + width + (30 / 300) * width, y - length - 1), (x + width - (20 / 300) * width, y - length - 1),
-    (x + width - (20 / 300) * width, y - length - (40 / 400) * length)))
+        (x + width + (30 / 300) * width, y - length - 1), (x + width - (20 / 300) * width, y - length - 1),
+        (x + width - (20 / 300) * width, y - length - (40 / 400) * length)))
     d.rect(screen, roof_color,
            (x + (20 / 300) * width, y - length - (40 / 400) * length, width - (40 / 300) * width, (40 / 400) * length),
            0)
@@ -95,11 +97,27 @@ def house(x, y, width=300, length=400):
 def moon():
     d.circle(screen, (255, 255, 255), (550, 100), 50)
 
+
+def eyes():
+    pygame.draw.ellipse(screen, (255, 255, 255),
+                        (550, 300, 14, 40))
+    pygame.draw.circle(screen, (225, 0, 0),
+                       (560, 320), 7)
+    pygame.draw.circle(screen, (0, 0, 0),
+                       (560, 320), 5)
+    pygame.draw.ellipse(screen, (255, 255, 255),
+                        (570, 300, 14, 40))
+    pygame.draw.circle(screen, (255, 0, 0),
+                       (580, 320), 7)
+    pygame.draw.circle(screen, (0, 0, 0),
+                       (580, 320), 5)
+
+
 def shar():
     WIN_WIDTH = 650
     WIN_HEIGHT = 190
     RED = (255, 0, 0)
-    WHITE = (255,255,255)
+    WHITE = (255, 255, 255)
 
     clock = pygame.time.Clock()
     # screen = pygame.display.set_mode(
@@ -119,7 +137,7 @@ def shar():
                 sys.exit()
 
         # заливаем фон
-        #screen.fill(WHITE)
+        # screen.fill(WHITE)
         # рисуем круг
         pygame.draw.circle(screen, RED,
                            (x, y), r)
@@ -138,9 +156,9 @@ def shar():
         clock.tick(FPS)
 
 
-def clouds_r():
-        d.ellipse(screen, (219,112,147), (350, 150, 180, 50))
-        d.ellipse(screen, (219, 112, 147), (470, 200, 100, 30))
+def clouds_r(n):
+    for i in range(n):
+        d.ellipse(screen, (ri(150, 200), 128, 128), (ri(100, 600), ri(30, 300), ri(200, 300), ri(50, 70)))
 
 
 def chimney1(x, y, w=300, l=400):
@@ -182,25 +200,26 @@ def ghost(x, y, s, k=1, r=1):
         a.append((x + 2 * i * k, y + 0.1 * i * i * k))
     d.polygon(s, 'WHITE', a)
 
+
 def draw():
     set_start_environment()
+    clouds_r(3)
     house(50, 560, 300, 400)
     chimney1(50, 560, 300, 400)
     chimney2(50, 560, 300, 400)
     ghost(500, 500, screen)
-    clouds_r()
-    #eyes()
+    # eyes()
+
 
 draw()
 shar()
 
-
 pygame.display.update()
 
-#while not finished:
-    #clock.tick(FPS)
-    #for event in pygame.event.get():
-       # if event.type == pygame.QUIT:
-        #    finished = True
+# while not finished:
+# clock.tick(FPS)
+# for event in pygame.event.get():
+# if event.type == pygame.QUIT:
+#    finished = True
 
 pygame.quit()
