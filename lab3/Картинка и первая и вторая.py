@@ -144,12 +144,27 @@ def clouds_r():
 
 
 def chimney1(x, y, w=300, l=400):
+    '''
+    :param x: the same parametr as in function "house"
+    :param y: the same parametr as in function "house"
+    :param w: the same parametr as in function "house"
+    :param l: the same parametr as in function "house"
+    :return: draw two chimney
+    '''
     chimney_color = (56, 56, 56)
     d.rect(screen, chimney_color, (x + (250 / 300) * w, y - l - (75 / 400) * l, (10 / 300) * w, (70 / 400) * l + 1))
     d.rect(screen, chimney_color, (x + (50 / 300) * w, y - l - (90 / 400) * l, (20 / 300) * w, (50 / 400) * l + 1))
 
 
 def chimney2(x, y, w=300, l=400):
+    '''
+    :param x: the same parametr as in function "house"
+    :param y: the same parametr as in function "house"
+    :param w: the same parametr as in function "house"
+    :param l: the same parametr as in function "house"
+    :return: draw another two chimney
+    '''
+
     chimney_color = (56, 56, 56)
     d.rect(screen, chimney_color, (x + (200 / 300) * w, y - l - (90 / 400) * l, (25 / 300) * w, (60 / 400) * l + 1))
     d.rect(screen, chimney_color, (x + (100 / 300) * w, y - l - (100 / 400) * l, (30 / 300) * w, (90 / 400) * l + 1))
@@ -161,12 +176,14 @@ def set_start_environment():
     moon()
 
 
+
 def ghost(x, y, s, k=1, r=1):
     d.circle(s, (255, 255, 255), (x, y), 25 * k)
     d.circle(s, (25, 150, 255), (x - r * 10 * k, y - 9 * k), 5 * k)
     d.circle(s, (25, 150, 255), (x + r * 8 * k, y - 9 * k), 5 * k)
     d.circle(s, (0, 0, 0), (x - r * 11 * k, y - 9 * k), 2 * k)
     d.circle(s, (0, 0, 0), (x + r * 7 * k, y - 9 * k), 2 * k)
+
 
     a = []  # list of points
     b = []  # list that helps me create right range
