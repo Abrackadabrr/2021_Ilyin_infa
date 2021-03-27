@@ -5,7 +5,7 @@ from CONSTANTS import *
 
 
 class Ball:
-    def __init__(self, x, y, born_time=0):
+    def __init__(self, x, y, born_time=0, color=0):
         """
         Шарик - это по сути пулька, которую испускает пушка при стрельбе
         :param x: х координата позиции, на которой происходит появление
@@ -28,7 +28,10 @@ class Ball:
         self.r = 10
         self.vx = 0
         self.vy = 0
-        self.color = randint(1, 5)
+        if not color:
+            self.color = randint(1, 5)
+        else:
+            self.color = color
         self.is_alive = True
         self.on_the_floor = False
 
@@ -98,7 +101,6 @@ class Ball:
     def hittest(self, obj):
         """
         Проверка, столкнулся ли шарик с объектом obj. Для этого объекта ДОЛЖНЫ БЫТЬ опредены х, у и r
-        К сожалению, пока только реализованы столкновения с круглыми объектами
         :param obj:
         :return: True - если столкнулся и False в противном случае
         """
@@ -107,7 +109,107 @@ class Ball:
         else:
             return False
 
-    def update(self, time):
+    def update(self, time, number_of_level):
+        """
+        Стандартный апдейт (см docs.txt)
+        :param time: текущее время
+        """
+        self.move(time)
+        self.check_alive(time)
+
+
+class Follower:
+    def __init__(self, x, y, gun_x, gun_y, index, born_time=0):
+        """
+        "Последователь" - враг пушки, который вылезает из треугольных мишеней и всегда следует за пушкой
+        :param x: х координата позиции, на которой происходит появление
+        :param y: у координата позиции, на которой происходит появление
+        :param born_time: время, в которое шарик появился на экрене
+        self.born_time - вермя рождения шарика (когда появился на поле)
+        self.time_of_live - время жизни шарика
+        self.r  - радиус шарика
+        self.vx - скорость шарика по оси х
+        self.vy - скорость по оси у (нужно помнить, что она идет в обратном направлении)
+        self.color - индекс цвета в массиве COLORS
+        self.is_alive - живой или нет
+        self.on_the_floor - находится ли на полу (нижняя часть экрана;
+        проверка происходит по типу "если коснулся и скорость маленькая => True")
+        """
+        self.born_time = born_time
+        self.time_of_live = TIME_FOLLIFE  # milliseconds
+        self.gun_x = gun_x
+        self.gun_y = gun_y
+        self.x = x
+        self.y = y
+        self.r = 10
+        self.vx = 0
+        self.vy = 0
+        self.color = 6
+        self.is_alive = True
+        self.on_the_floor = False
+        self.index_of_gun = index
+
+    def draw(self):
+        """
+        Определяет КАК будет отрисовываться шарик
+        """
+        width_of_bublick = 7
+        draw.circle(SCREEN, COLORS[self.color], (self.x, self.y), self.r, width=width_of_bublick)
+        draw.circle(SCREEN, 'BLACK', (self.x, self.y), self.r, width=2)
+        draw.circle(SCREEN, 'BLACK', (self.x, self.y), self.r - width_of_bublick, width=1)
+
+    def check_alive(self, time):
+        """
+        Проверяет, не закончилось ли время жизни у шарика
+        :param time: текущеее время
+        """
+        if time - self.born_time >= self.time_of_live:
+            self.is_alive = False
+
+    def move(self, time):
+        """
+        Стандартный move (см docs.txt)
+        :param time: текущее время (планируется привязка к реальному времени, пока она есть, но сомнительная)
+        - не используется
+        """
+        if self.x >= SCREEN_X - self.r:
+            self.x = SCREEN_X - self.r
+            self.vx = -1 * self.vx
+            self.x += self.vx
+
+        if self.x <= self.r:
+            self.x = self.r
+            self.vx = -1 * self.vx
+            self.x += self.vx
+
+        if self.y >= SCREEN_Y - self.r:
+            self.y = SCREEN_Y - self.r
+            self.vy = -1 * self.vy
+            self.y -= self.vy
+
+        if self.y <= self.r:
+            self.y = self.r
+            self.vy = -1 * self.vy
+            self.y -= self.vy
+
+        self.vx = randint(-5, 5)
+        self.vy = randint(-5, 5)
+
+        self.x += self.vx
+        self.y -= self.vy
+
+    def hittest(self, obj):
+        """
+        Проверка, столкнулся ли шарик с объектом obj. Для этого объекта ДОЛЖНЫ БЫТЬ опредены х, у и r
+        :param obj:
+        :return: True - если столкнулся и False в противном случае
+        """
+        if (self.x - obj.x)**2 + (self.y - obj.y)**2 <= (self.r + obj.r)**2:
+            return True
+        else:
+            return False
+
+    def update(self, time, number_of_level):
         """
         Стандартный апдейт (см docs.txt)
         :param time: текущее время
@@ -237,7 +339,7 @@ class Gun:
 
         self.targetting(event)
 
-    def update(self, time):
+    def update(self, time, number_of_level):
         """
         Стандартный апдейт (см docs.txt)
         :param time: текущее время
@@ -258,10 +360,12 @@ class Target:
         self.is_alive - жив или нет
         self.enum - отладочная переменная; позволяет делать вывод в консольку в читабельном виде
         self.points - очки, выдаваемые за изничижение мишени
+        self.vx - скорость по оси ыкс
         """
         self.x = randint(200, SCREEN_X - 20)
         self.y = randint(20, SCREEN_Y - 200)
         self.r = randint(13, 50)
+        self.vx = randint(-3, 3)*(FPS/60)
         self.color = 'RED'
         self.is_alive = True
         self.enum = number
@@ -274,7 +378,7 @@ class Target:
         """
         Всё ради удобста отладки
         """
-        return "{ T: " + str(self.enum) + " }"
+        return "{ stnd_T: " + str(self.enum) + " }"
 
     def draw(self):
         """
@@ -282,18 +386,88 @@ class Target:
         """
         draw.circle(SCREEN, self.color, (self.x, self.y), self.r)
 
-    def move(self):
+    def move(self, time, number_of_level):
         """
         Стандартный move (см docs.txt)
         """
-        self.x += randint(-2, 2)
-        self.y += randint(-2, 2)
+        self.x += self.vx
+
+        if self.x >= SCREEN_X - self.r:
+            self.x = SCREEN_X - self.r
+            self.vx = -1 * self.vx
+            self.x += self.vx
+
+        if self.x <= self.r:
+            self.x = self.r
+            self.vx = -1 * self.vx
+            self.x += self.vx
+
+        if int(time) % 1000 < 10:
+            self.vx = randint(-(number_of_level - NUMBER_OF_LEVEL_WHEN_TARGETS_STARTS_MOVING),
+                              (number_of_level - NUMBER_OF_LEVEL_WHEN_TARGETS_STARTS_MOVING)) * (FPS / 60)
+
         # сделатьченитьадекватное
 
-    def update(self, time):
+    def update(self, time, number_of_level):
         """
         Cтандартный апдейт (см docs.txt)
         :param time: текущее время
         """
-        # self.move()
+        if number_of_level > NUMBER_OF_LEVEL_WHEN_TARGETS_STARTS_MOVING:
+            self.move(time, number_of_level)
         pass
+
+    def time_loop(self, drawclass, gamelogicclass, time):
+        pass
+
+
+class ModTargets(Target):
+
+    def __init__(self, number):
+        super().__init__(number)
+        self.color = 'BLACK'
+        self.points = 3
+        self.x = randint(SCREEN_X - 100, SCREEN_X - 20)
+        self.y = randint(SCREEN_Y/60, SCREEN_Y/6)
+        self.r = 20
+        self.vx = 0
+        self.time_of_last_shoot = 0
+
+    def __str__(self):
+        """
+        Всё ради удобста отладки
+        """
+        return "{ mod_T: " + str(self.enum) + " }"
+
+    def draw(self):
+        """
+        Стандартный draw
+        """
+        draw.polygon(SCREEN, self.color, [(self.x, self.y), (self.x - self.r, self.y), (self.x, self.y + self.r)])
+
+    def move(self, time, number_of_level):
+        if int (time) % 4000 < 10:
+            self.x = randint(SCREEN_X/2, SCREEN_X - 2*self.r)
+            self.y = randint(2 * self.r, SCREEN_Y - 2 * self.r)
+
+    def shoot(self, time, gun_x, gun_y, index):
+        """
+        Обработка окончания атаки (вызывается после обработки события отжатой кнопки)
+        :param time: текущее время в игре (ставится запущенному шарику)
+        :return:
+        """
+        new_follower = Follower(self.x, self.y, gun_x, gun_y, index, born_time=time)
+        new_follower.vx = -10
+        new_follower.vy = 0
+
+        return new_follower
+
+    def time_loop(self, drawclass, gamelogicclass, time):
+        if time - self.time_of_last_shoot > randint(*D_TIME_OF_FOL):
+            index_of_goal = randint(0, len(gamelogicclass.guns) - 1)
+            link_to_new_fol = self.shoot(time, gamelogicclass.guns[index_of_goal].start_pos[0],
+                                         gamelogicclass.guns[index_of_goal].start_pos[1], index_of_goal)
+            drawclass.append(link_to_new_fol)
+            gamelogicclass.append(follower=link_to_new_fol)
+            self.is_alive = False
+            self.points = 0

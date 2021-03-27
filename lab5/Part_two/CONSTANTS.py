@@ -5,11 +5,15 @@ import pygame
 FPS = 60
 # время жизни мячиков, которые пуляет пушка
 TIME_BALLLIFE = 6000
+
+TIME_FOLLIFE = 50000000
+
 # Это коэффициент, который преобразует силу пушки в скорость шарика (обратно пропорционален FPS)
 # (попытка привязки скорости шариков к реальному времени).
 K_UP_SPEED = 30/FPS
 # Количество мишеней на раунд
 AM_OF_TARGETS = 3
+AM_OF_MODI_TARCS = 2
 # Количесвто пушек в игре
 AM_OF_GUNS = 1
 # Ширина и высота игрового поля (не стоит менять)
@@ -24,7 +28,7 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 # Массив с ними
-COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN, BLACK]
 # Цвета пушки: позиция 0 - не заряжена, позиция 1 - заряжена
 COLOR_OF_GUN = ['BLACK', 'RED']
 # Создание рабочей области
@@ -36,8 +40,13 @@ START_POWER_OF_GUNS = 30
 # Коэффициент трения для нижней границы экрана (фича для движения шариков)
 K_OF_TRENIE = 0.03
 # вермя одного раунда
-LEVEL_TIME = 10000
+LEVEL_TIME = 15000
+# номер раунда, после которого мишеньки начинают двигаться
+NUMBER_OF_LEVEL_WHEN_TARGETS_STARTS_MOVING = 3
+# номер раунда, после которого начинают появляться мишени нового типа
+NUM_OF_LEVEL_WHEN_MODI_TARGS_CAME = 5
+
+D_TIME_OF_FOL = [1000, 2000]
 
 # Булевые переменные тоже для настройки
 IS_BALLS_BECOME_DED_WHEN_THEY_COLLIDE = False
-

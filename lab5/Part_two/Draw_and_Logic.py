@@ -19,6 +19,7 @@ class GameLogic:
         self.guns = [*gun]
         self.balls = []
         self.targets = []
+        self.followers = []
         self.amount_of_all_balls = 0
         self.score = 0
 
@@ -41,7 +42,11 @@ class GameLogic:
         for i in range(len(targets)):
             self.targets.append(targets[i])
 
-    def append(self, gun=None, ball=None, target=None):
+    def append_followers(self, *followers):
+        for i in range(len(followers)):
+            self.followers.append(followers[i])
+
+    def append(self, gun=None, ball=None, target=None, follower=None):
         """
         То, что дергаем для заполнения из вызывающего кода
         :param gun: пушки
@@ -54,6 +59,8 @@ class GameLogic:
             self.append_balls(ball)
         if target:
             self.append_targets(target)
+        if follower:
+            self.append_followers(follower)
 
     def check_updates(self):
         """
@@ -81,6 +88,12 @@ class GameLogic:
             if figure.is_alive:
                 new_guns.append(figure)
         self.guns = new_guns
+
+        new_followers = []
+        for figure in self.followers:
+            if figure.is_alive:
+                new_followers.append(figure)
+        self.followers = new_followers
 
     def update_game_procces(self, time):
         """"
@@ -149,7 +162,13 @@ class DrawMaster:
         Рисует текст, отвечающий концу уровня (все цели уничтожены)
         """
         self.print_text("Цели уничтожены. Количество выстрелов: " + str(self.amount_of_all_balls), COLORS[0],
-                            (SCREEN_X / 7 + SCREEN_X/15, SCREEN_Y / 4), 40)
+                            (SCREEN_X / 7, SCREEN_Y / 4), 40)
+
+    def draw_number_of_level(self, number_of_level):
+        """
+        Рисует буквально "Уровень номер *номер*"
+        """
+        self.print_text("Уровень " + str(number_of_level), 'BLACK', (20, 60), 20)
 
     def draw_end_of_game(self, score):
         """
@@ -187,16 +206,17 @@ class DrawMaster:
                 new_massive.append(figure)
         self.massive_of_acting_figures = new_massive
 
-    def draw(self, time, score):
+    def draw(self, time, score, number_of_level):
         """
         НЕСТАНДАРТНЫЙ draw
         Запинамет отрисовкой всех элементов
         Тыкает все нужные объекты по ссылке в их методы update и draw
         :param time: время игры
         :param score: счёт, для его отрисовки
+        :param Номер уровня
         """
         for figure in self.massive_of_acting_figures:
-            figure.update(time)
+            figure.update(time, number_of_level)
             figure.draw()
             self.check_updates()
         self.draw_score(score)
