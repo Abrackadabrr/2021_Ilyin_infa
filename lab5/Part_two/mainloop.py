@@ -1,4 +1,4 @@
-from Draw_and_Logic import *
+from Game_class import *
 
 
 def the_end(score):
@@ -56,9 +56,8 @@ while not finished:
     score_of_one_level = 0  # счёт конктреного уровня
 
     GUN1 = Gun(50, 500)
-    GUN2 = Gun(500, 500)
-    game_logic = GameLogic(GUN1, GUN2)
-    draw_master = DrawMaster(GUN1, GUN2)
+    game_logic = GameLogic(GUN1)
+    draw_master = DrawMaster(GUN1)
 
     one_tick = 1000 / FPS  # количество миллисекунд на один тик часов
     game_time = 0  # полное время в миллисекундах
@@ -78,7 +77,6 @@ while not finished:
                 finished = True
                 end_of_level = True
             GUN1.event_loop(event, draw_master, game_logic, game_time)
-            GUN2.event_loop(event, draw_master, game_logic, game_time)
         # проверка на нажите крестика (работает, так как значение False может быть выставлено по завершении игры только
         # ПОСЛЕ проверки этого условия
         if end_of_level:

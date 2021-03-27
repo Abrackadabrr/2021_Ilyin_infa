@@ -129,19 +129,28 @@ class Gun:
         self.start_pos - tuple отвечающий за точку, относительно которой вращаемся
         self.end_pos -  tuple отвечающий за конечую точку дула (для отрисовки и запуска шариков)
         self.is_alive - жив или нет
+        self.balls - массив шариков, который пушка выпустила
         """
         self.f2_power = START_POWER_OF_GUNS
+        self.vx = 12
         self.f2_on = 0
         self.color = 0
         self.angle = 0
-        self.start_pos = (x, y)
+        self.start_pos = [x, y]
         self.end_pos = (self.f2_power * math.cos(self.angle), self.f2_power * math.sin(self.angle))
         self.is_alive = True
+        self.balls = []
 
     def draw(self):
         draw.line(SCREEN, COLOR_OF_GUN[self.color], self.start_pos, self.end_pos, width=10)
         draw.circle(SCREEN, COLORS[4], self.start_pos, 15)
         draw.circle(SCREEN, COLOR_OF_GUN[self.color], self.end_pos, 7)
+
+    def event_move(self, left=False, right=False):
+        if left:
+            self.start_pos[0] -= self.vx
+        if right:
+            self.start_pos[0] += self.vx
 
     def fire_start(self):
         """
@@ -216,8 +225,16 @@ class Gun:
             link_to_new_ball = self.fire_end(time)
             drawclass.append(link_to_new_ball)
             gamelogicclass.append(ball=link_to_new_ball)
+            self.balls.append(link_to_new_ball)
             if counting_balls:
                 drawclass.amount_of_all_balls += 1
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                self.event_move(right=True)
+            if event.key == pygame.K_LEFT:
+                self.event_move(left=True)
+
         self.targetting(event)
 
     def update(self, time):
@@ -242,9 +259,9 @@ class Target:
         self.enum - отладочная переменная; позволяет делать вывод в консольку в читабельном виде
         self.points - очки, выдаваемые за изничижение мишени
         """
-        self.x = randint(200, SCREEN_X)
+        self.x = randint(200, SCREEN_X - 20)
         self.y = randint(20, SCREEN_Y - 200)
-        self.r = randint(7, 50)
+        self.r = randint(13, 50)
         self.color = 'RED'
         self.is_alive = True
         self.enum = number

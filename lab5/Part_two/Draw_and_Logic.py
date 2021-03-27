@@ -96,12 +96,13 @@ class GameLogic:
                 if ball.hittest(target):
                     target.is_alive = False
 
-        for i in range(len(self.balls)):  # логическая свзяь для обработки столкновений "шарик - шарик"
-            for j in range(i, len(self.balls)):
-                if j != i:
-                    if self.balls[i].hittest(self.balls[j]):
-                        self.balls[i].is_alive = False
-                        self.balls[j].is_alive = False
+        if IS_BALLS_BECOME_DED_WHEN_THEY_COLLIDE:
+            for i in range(len(self.balls)):  # логическая свзяь для обработки столкновений "шарик - шарик"
+                for j in range(i, len(self.balls)):
+                    if j != i:
+                        if self.balls[i].hittest(self.balls[j]):
+                            self.balls[i].is_alive = False
+                            self.balls[j].is_alive = False
 
         self.check_updates()
 
@@ -147,8 +148,8 @@ class DrawMaster:
         """
         Рисует текст, отвечающий концу уровня (все цели уничтожены)
         """
-        self.print_text("Цели уничтожены; количество выстрелов: " + str(self.amount_of_all_balls), COLORS[0],
-                            (SCREEN_X / 7, SCREEN_Y / 4), 40)
+        self.print_text("Цели уничтожены. Количество выстрелов: " + str(self.amount_of_all_balls), COLORS[0],
+                            (SCREEN_X / 7 + SCREEN_X/15, SCREEN_Y / 4), 40)
 
     def draw_end_of_game(self, score):
         """
@@ -156,8 +157,8 @@ class DrawMaster:
         :param score: счет игры (полный)
         :return: is_end
         """
-        self.print_text("Время вышло; получено очков: " + str(score), COLORS[0],
-                        (SCREEN_X / 7, SCREEN_Y / 4), 40)
+        self.print_text("Время вышло. Получено очков: " + str(score), COLORS[0],
+                        (SCREEN_X / 7 + SCREEN_X/15, SCREEN_Y / 4), 40)
 
     def draw_remaining_time(self, time):
         """
@@ -165,7 +166,7 @@ class DrawMaster:
         :param time: текущее время игры
         """
         self.print_text("Оставшееся время: " + str(int(int(LEVEL_TIME - time)/100)/10), 'BLACK', (20, 40), 20)
-        self.print_text("секунд", 'BLACK', (200, 40), 20)
+        self.print_text("секунд", 'BLACK', (190, 40), 20)
 
     def draw_score(self, scor):
         """
